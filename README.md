@@ -1,4 +1,4 @@
-# Human-Resource-Managment-System (HRM)
+# Human Resource Managment System (HRM)
 
 ## Description
 A Human Resource Management System built using React, FastAPI, and MySQL.
