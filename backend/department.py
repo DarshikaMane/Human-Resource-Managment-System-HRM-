@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from backend.database import get_db
-from backend.models import Department
-from backend.schemas import DepartmentCreate, DepartmentResponse
-from backend.security import verify_token
+from database import get_db
+from models import Department
+from schemas import DepartmentCreate, DepartmentResponse
+from security import verify_token
 
 router = APIRouter()
 
