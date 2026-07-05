@@ -1,7 +1,5 @@
 import "./App.css";
-import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
-import API from "./services/api";
 
 import Sidebar from "./components/Sidebar";
 
