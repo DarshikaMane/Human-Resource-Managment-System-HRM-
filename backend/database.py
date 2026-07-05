@@ -4,10 +4,10 @@ from sqlalchemy.orm import sessionmaker
 
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
-    "mysql://root:apggVpJdxoXOhkbPFodCrJoiEJJqJpIY@mysql.railway.internal:3306/railway"
+    "mysql://root:apggVpJdxoXOhkbPFodCrJoiEJJqJpIY@hayabusa.proxy.rlwy.net:56031/railway"
 )
 
-# Convert Railway URL to SQLAlchemy format
+# Convert Railway MySQL URL to SQLAlchemy format
 DATABASE_URL = DATABASE_URL.replace(
     "mysql://",
     "mysql+pymysql://",
@@ -21,6 +21,7 @@ SessionLocal = sessionmaker(
     autoflush=False,
     bind=engine
 )
+
 
 def get_db():
     db = SessionLocal()
