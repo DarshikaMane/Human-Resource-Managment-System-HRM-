@@ -1,7 +1,18 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-DATABASE_URL = "mysql+pymysql://root:Dik%40bts0704@localhost/hrm_db"
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "mysql://root:apggVpJdxoXOhkbPFodCrJoiEJJqJpIY@mysql.railway.internal:3306/railway"
+)
+
+# Convert Railway URL to SQLAlchemy format
+DATABASE_URL = DATABASE_URL.replace(
+    "mysql://",
+    "mysql+pymysql://",
+    1
+)
 
 engine = create_engine(DATABASE_URL)
 
@@ -11,7 +22,6 @@ SessionLocal = sessionmaker(
     bind=engine
 )
 
-# Dependency
 def get_db():
     db = SessionLocal()
     try:
