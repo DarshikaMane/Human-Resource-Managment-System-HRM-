@@ -8,8 +8,9 @@ A full-stack Human Resource Management System (HRM) developed using **React (Vit
 
 ### Frontend (Vercel)
 
-https://human-resource-managment-system-7spdmf4c8-darshika-mane.vercel.app
+https://human-resource-managment-system-hrm.vercel.app
 
+---
 ### Backend (Render)
 
 https://hrm-backend-bb81.onrender.com
