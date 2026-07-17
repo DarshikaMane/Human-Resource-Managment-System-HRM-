@@ -4,12 +4,16 @@ import API from "../services/api";
 function Employee() {
   const [employees, setEmployees] = useState([]);
 
-  const [employeeName, setEmployeeName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [mobile, setMobile] = useState("");
   const [department, setDepartment] = useState("");
-  const [designation, setDesignation] = useState("");
-  const [salary, setSalary] = useState("");
+  const [role, setRole] = useState("");
+  const [reportingManager, setReportingManager] = useState("");
+  const [dateOfJoining, setDateOfJoining] = useState("");
 
   const [employeeEditId, setEmployeeEditId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -27,56 +31,70 @@ function Employee() {
     }
   };
 
+  const clearForm = () => {
+    setFirstName("");
+    setLastName("");
+    setUsername("");
+    setPassword("");
+    setEmail("");
+    setMobile("");
+    setDepartment("");
+    setRole("");
+    setReportingManager("");
+    setDateOfJoining("");
+    setEmployeeEditId(null);
+  };
+
   const saveEmployee = async () => {
     if (
-      employeeName === "" ||
-      email === "" ||
-      phone === "" ||
-      department === "" ||
-      designation === "" ||
-      salary === ""
+      !firstName ||
+      !lastName ||
+      !username ||
+      !password ||
+      !email ||
+      !mobile ||
+      !department ||
+      !role ||
+      !reportingManager ||
+      !dateOfJoining
     ) {
-      alert("Please Fill All Employee Fields");
+      alert("Please fill all fields");
       return;
     }
 
+    const employeeData = {
+      first_name: firstName,
+      last_name: lastName,
+      username,
+      password,
+      email,
+      mobile,
+      department,
+      role,
+      reporting_manager: reportingManager,
+      date_of_joining: dateOfJoining,
+    };
+
     try {
-      if (employeeEditId !== null) {
-        await API.put(`/employees/${employeeEditId}`, {
-          employee_name: employeeName,
-          email,
-          phone,
-          department,
-          designation,
-          salary: parseInt(salary),
-        });
-
-        setEmployeeEditId(null);
-
+      if (employeeEditId) {
+        await API.put(`/employees/${employeeEditId}`, employeeData);
       } else {
-        await API.post("/employees", {
-          employee_name: employeeName,
-          email,
-          phone,
-          department,
-          designation,
-          salary: parseInt(salary),
-        });
+        await API.post("/employees", employeeData);
       }
 
       fetchEmployees();
-
-      setEmployeeName("");
-      setEmail("");
-      setPhone("");
-      setDepartment("");
-      setDesignation("");
-      setSalary("");
+      clearForm();
 
     } catch (error) {
-      console.log(error);
-      alert("Error Saving Employee");
-    }
+  console.log(error);
+  console.log(error.response);
+
+  alert(
+    error.response?.data?.detail
+      ? JSON.stringify(error.response.data.detail)
+      : error.message
+  );
+}
   };
 
   const deleteEmployee = async (id) => {
@@ -88,7 +106,6 @@ function Employee() {
       alert("Error deleting employee");
     }
   };
-
   return (
     <div className="employee-section">
 
@@ -112,9 +129,16 @@ function Employee() {
 
         <input
           type="text"
-          placeholder="Employee Name"
-          value={employeeName}
-          onChange={(e) => setEmployeeName(e.target.value)}
+          placeholder="First Name"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+        />
+
+        <input
+          type="text"
+          placeholder="Last Name"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
         />
 
         <input
@@ -123,39 +147,70 @@ function Employee() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-                <input
-          type="text"
-          placeholder="Phone"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-        />
 
         <input
           type="text"
-          placeholder="Department"
+          placeholder="Mobile Number"
+          value={mobile}
+          onChange={(e) => setMobile(e.target.value)}
+        />
+
+        <select
           value={department}
           onChange={(e) => setDepartment(e.target.value)}
+        >
+          <option value="">Select Department</option>
+          <option>IT</option>
+          <option>HR</option>
+          <option>Finance</option>
+          <option>Sales</option>
+        </select>
+
+        <select
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
+        >
+          <option value="">Select Role</option>
+          <option>Admin</option>
+          <option>Manager</option>
+          <option>Employee</option>
+        </select>
+
+        <select
+          value={reportingManager}
+          onChange={(e) => setReportingManager(e.target.value)}
+        >
+          <option value="">Reporting Manager</option>
+          <option>Manager 1</option>
+          <option>Manager 2</option>
+          <option>Manager 3</option>
+        </select>
+
+        <input
+          type="date"
+          value={dateOfJoining}
+          onChange={(e) => setDateOfJoining(e.target.value)}
         />
 
         <input
           type="text"
-          placeholder="Designation"
-          value={designation}
-          onChange={(e) => setDesignation(e.target.value)}
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
 
         <input
-          type="number"
-          placeholder="Salary"
-          value={salary}
-          onChange={(e) => setSalary(e.target.value)}
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
 
         <button
           className="save-btn"
           onClick={saveEmployee}
         >
-          {employeeEditId !== null ? "Update Employee" : "Save Employee"}
+          {employeeEditId ? "Update Employee" : "Save Employee"}
         </button>
 
       </div>
@@ -165,12 +220,15 @@ function Employee() {
         <thead>
           <tr>
             <th>ID</th>
-            <th>Name</th>
+            <th>First Name</th>
+            <th>Last Name</th>
             <th>Email</th>
-            <th>Phone</th>
+            <th>Mobile</th>
             <th>Department</th>
-            <th>Designation</th>
-            <th>Salary</th>
+            <th>Role</th>
+            <th>Reporting Manager</th>
+            <th>Date of Joining</th>
+            <th>Username</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -179,38 +237,38 @@ function Employee() {
 
           {employees
             .filter((emp) =>
-              emp.employee_name
+              (emp.first_name || "")
                 .toLowerCase()
                 .includes(searchTerm.toLowerCase())
             )
             .map((emp, index) => (
 
               <tr key={emp.id}>
-
                 <td>{index + 1}</td>
-
-                <td>{emp.employee_name}</td>
-
+                <td>{emp.first_name}</td>
+                <td>{emp.last_name}</td>
                 <td>{emp.email}</td>
-
-                <td>{emp.phone}</td>
-                                <td>{emp.department}</td>
-
-                <td>{emp.designation}</td>
-
-                <td>{emp.salary}</td>
+                <td>{emp.mobile}</td>
+                <td>{emp.department}</td>
+                <td>{emp.role}</td>
+                <td>{emp.reporting_manager}</td>
+                <td>{emp.date_of_joining}</td>
+                <td>{emp.username}</td>
 
                 <td>
-
                   <button
                     className="edit-btn"
                     onClick={() => {
-                      setEmployeeName(emp.employee_name);
+                      setFirstName(emp.first_name);
+                      setLastName(emp.last_name);
+                      setUsername(emp.username);
+                      setPassword(emp.password);
                       setEmail(emp.email);
-                      setPhone(emp.phone);
+                      setMobile(emp.mobile);
                       setDepartment(emp.department);
-                      setDesignation(emp.designation);
-                      setSalary(emp.salary.toString());
+                      setRole(emp.role);
+                      setReportingManager(emp.reporting_manager);
+                      setDateOfJoining(emp.date_of_joining);
                       setEmployeeEditId(emp.id);
                     }}
                   >
@@ -223,9 +281,7 @@ function Employee() {
                   >
                     Delete
                   </button>
-
                 </td>
-
               </tr>
 
             ))}

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, Boolean
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, Date
 from datetime import datetime
 from sqlalchemy.orm import declarative_base
 
@@ -21,22 +21,31 @@ class Department(Base):
 
     status = Column(Boolean, default=True)
     
+
 class Employee(Base):
     __tablename__ = "employees"
 
     id = Column(Integer, primary_key=True, index=True)
 
-    employee_name = Column(String(100), nullable=False)
+    first_name = Column(String(100), nullable=False)
+
+    last_name = Column(String(100), nullable=False)
+
+    username = Column(String(100), unique=True, nullable=False)
+
+    password = Column(String(100), nullable=False)
 
     email = Column(String(100), nullable=False)
 
-    phone = Column(String(20), nullable=False)
+    mobile = Column(String(20), nullable=False)
 
     department = Column(String(100), nullable=False)
 
-    designation = Column(String(100), nullable=False)
+    role = Column(String(100), nullable=False)
 
-    salary = Column(Integer, nullable=False)
+    reporting_manager = Column(String(100), nullable=False)
+
+    date_of_joining = Column(Date, nullable=False)
 
     created_at = Column(
         DateTime,

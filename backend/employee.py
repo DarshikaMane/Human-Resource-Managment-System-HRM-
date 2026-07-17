@@ -5,6 +5,7 @@ from database import get_db
 from models import Employee
 from schemas import EmployeeCreate, EmployeeResponse
 from security import verify_token
+
 router = APIRouter()
 
 
@@ -25,12 +26,16 @@ def create_employee(
     db: Session = Depends(get_db)
 ):
     new_employee = Employee(
-        employee_name=employee.employee_name,
+        first_name=employee.first_name,
+        last_name=employee.last_name,
+        username=employee.username,
+        password=employee.password,
         email=employee.email,
-        phone=employee.phone,
+        mobile=employee.mobile,
         department=employee.department,
-        designation=employee.designation,
-        salary=employee.salary
+        role=employee.role,
+        reporting_manager=employee.reporting_manager,
+        date_of_joining=employee.date_of_joining
     )
 
     db.add(new_employee)
@@ -48,10 +53,7 @@ def update_employee(
     username: str = Depends(verify_token),
     db: Session = Depends(get_db)
 ):
-
-    emp = db.query(Employee).filter(
-        Employee.id == employee_id
-    ).first()
+    emp = db.query(Employee).filter(Employee.id == employee_id).first()
 
     if not emp:
         raise HTTPException(
@@ -59,12 +61,16 @@ def update_employee(
             detail="Employee Not Found"
         )
 
-    emp.employee_name = employee.employee_name
+    emp.first_name = employee.first_name
+    emp.last_name = employee.last_name
+    emp.username = employee.username
+    emp.password = employee.password
     emp.email = employee.email
-    emp.phone = employee.phone
+    emp.mobile = employee.mobile
     emp.department = employee.department
-    emp.designation = employee.designation
-    emp.salary = employee.salary
+    emp.role = employee.role
+    emp.reporting_manager = employee.reporting_manager
+    emp.date_of_joining = employee.date_of_joining
 
     db.commit()
     db.refresh(emp)
@@ -79,10 +85,7 @@ def delete_employee(
     username: str = Depends(verify_token),
     db: Session = Depends(get_db)
 ):
-
-    emp = db.query(Employee).filter(
-        Employee.id == employee_id
-    ).first()
+    emp = db.query(Employee).filter(Employee.id == employee_id).first()
 
     if not emp:
         raise HTTPException(

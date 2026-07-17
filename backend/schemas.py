@@ -1,6 +1,8 @@
 from pydantic import BaseModel
-from datetime import datetime
+from datetime import datetime, date
 
+
+# -------------------- Department --------------------
 
 class DepartmentCreate(BaseModel):
     department_name: str
@@ -18,29 +20,43 @@ class DepartmentResponse(BaseModel):
     class Config:
         from_attributes = True
 
+
+# -------------------- Employee --------------------
+
 class EmployeeCreate(BaseModel):
-    employee_name: str
+    first_name: str
+    last_name: str
+    username: str
+    password: str
     email: str
-    phone: str
+    mobile: str
     department: str
-    designation: str
-    salary: int
+    role: str
+    reporting_manager: str
+    date_of_joining: date
 
 
 class EmployeeResponse(BaseModel):
     id: int
-    employee_name: str
+    first_name: str
+    last_name: str
+    username: str
+    password: str
     email: str
-    phone: str
+    mobile: str
     department: str
-    designation: str
-    salary: int
+    role: str
+    reporting_manager: str
+    date_of_joining: date
     created_at: datetime
     updated_at: datetime
     status: bool
 
     class Config:
         from_attributes = True
+
+
+# -------------------- User --------------------
 
 class UserCreate(BaseModel):
     username: str
@@ -56,6 +72,9 @@ class UserResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+# -------------------- Login --------------------
 
 class LoginRequest(BaseModel):
     username: str
