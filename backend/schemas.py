@@ -79,3 +79,20 @@ class UserResponse(BaseModel):
 class LoginRequest(BaseModel):
     username: str
     password: str
+
+# -------------------- Role --------------------
+
+class RoleCreate(BaseModel):
+    role_name: str
+    description: str
+
+
+class RoleResponse(BaseModel):
+    role_id: int
+    role_name: str
+    description: str
+    created_at: datetime
+    updated_at: datetime
+
+    class Config:
+        from_attributes = True

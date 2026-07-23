@@ -14,6 +14,8 @@ import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Users from "./pages/Users";
 
+import Role from "./components/Role";
+
 function DashboardLayout() {
   return (
     <div className="dashboard">
@@ -46,6 +48,7 @@ function App() {
         <Route path="departments" element={<Departments />} />
         <Route path="employees" element={<Employees />} />
         <Route path="users" element={<Users />} />
+        <Route path="roles" element={<Role />} />
       </Route>
     </Routes>
   );

@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from department import router as department_router
 from employee import router as employee_router
 from users import router as user_router
+from role import router as role_router
 from database import engine
 from models import Base
 from auth import router as auth_router
@@ -33,3 +34,4 @@ app.include_router(department_router)
 app.include_router(employee_router)
 app.include_router(auth_router)
 app.include_router(user_router)
+app.include_router(role_router)

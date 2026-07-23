@@ -28,6 +28,11 @@ function Sidebar() {
   <li onClick={() => navigate("/dashboard/users")}>
     Users
   </li>
+
+  <li onClick={() => navigate("/dashboard/roles")}>
+  Role Management
+  </li>
+
 </ul>
 
       <button onClick={handleLogout}>

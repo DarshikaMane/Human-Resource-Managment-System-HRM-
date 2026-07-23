@@ -5,6 +5,7 @@ function DashboardHome() {
   const [departmentCount, setDepartmentCount] = useState(0);
   const [employeeCount, setEmployeeCount] = useState(0);
   const [userCount, setUserCount] = useState(0);
+  const [roleCount, setRoleCount] = useState(0);
 
   useEffect(() => {
     loadDashboard();
@@ -15,10 +16,12 @@ function DashboardHome() {
       const dept = await API.get("/departments");
       const emp = await API.get("/employees");
       const users = await API.get("/users");
+      const roles = await API.get("/roles/");
 
       setDepartmentCount(dept.data.length);
       setEmployeeCount(emp.data.length);
       setUserCount(users.data.length);
+      setRoleCount(roles.data.length);
     } catch (error) {
       console.log(error);
     }
@@ -43,6 +46,11 @@ function DashboardHome() {
         <div className="card">
           <h3>Total Users</h3>
           <h2>{userCount}</h2>
+        </div>
+
+        <div className="card">
+          <h3>Total Roles</h3>
+          <h2>{roleCount}</h2>
         </div>
 
       </div>
